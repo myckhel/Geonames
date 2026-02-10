@@ -4,15 +4,13 @@ namespace MichaelDrennen\Geonames\Tests;
 
 
 use MichaelDrennen\Geonames\Models\Geoname;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 
 class RepositoryTest extends AbstractGlobalTestCase {
 
 
-    public function setUp(): void {
-        parent::setUp();
-        echo "\nRunning setUp() in RepositoryTest...\n";
-        echo "\nDone running setUp() in RepositoryTest.\n";
-    }
+
 
     protected function getEnvironmentSetUp( $app ) {
         // Setup default database to use sqlite :memory:
@@ -25,34 +23,20 @@ class RepositoryTest extends AbstractGlobalTestCase {
     }
 
 
-    /**
-     * @test
-     * @group repo
-     */
-    public function theOnlyTest() {
-        $this->isoLanguageCode();
-        $this->featureClass();
-        $this->getStorageDirFromDatabase();
-        $this->admin1Code();
-        $this->admin2Code();
-        $this->alternateName();
-        $this->geoname();
-    }
 
 
-    /**
-     *
-     */
-    protected function getStorageDirFromDatabase() {
+
+    #[Group('repo')]
+    #[Test]
+    public function testGetStorageDirFromDatabase() {
         $dir = \MichaelDrennen\Geonames\Models\GeoSetting::getStorage();
         $this->assertEquals( $dir, 'geonames' );
     }
 
 
-    /**
-     *
-     */
-    protected function admin1Code() {
+    #[Group('repo')]
+    #[Test]
+    public function testAdmin1Code() {
         $repo       = new \MichaelDrennen\Geonames\Repositories\Admin1CodeRepository();
         $admin1Code = $repo->getByCompositeKey( 'AD', '06' );
         $this->assertInstanceOf( \MichaelDrennen\Geonames\Models\Admin1Code::class, $admin1Code );
@@ -64,10 +48,9 @@ class RepositoryTest extends AbstractGlobalTestCase {
         }
     }
 
-    /**
-     *
-     */
-    protected function admin2Code() {
+    #[Group('repo')]
+    #[Test]
+    public function testAdmin2Code() {
         $repo       = new \MichaelDrennen\Geonames\Repositories\Admin2CodeRepository();
         $admin2Code = $repo->getByCompositeKey( 'AF', '08', 609 );
         $this->assertInstanceOf( \MichaelDrennen\Geonames\Models\Admin2Code::class, $admin2Code );
@@ -80,10 +63,9 @@ class RepositoryTest extends AbstractGlobalTestCase {
     }
 
 
-    /**
-     *
-     */
-    protected function alternateName() {
+    #[Group('repo')]
+    #[Test]
+    public function testAlternateName() {
         $repo           = new \MichaelDrennen\Geonames\Repositories\AlternateNameRepository();
         $alternateNames = $repo->getByGeonameId( 7500737 );
         $this->assertInstanceOf( \Illuminate\Support\Collection::class, $alternateNames );
@@ -103,10 +85,9 @@ class RepositoryTest extends AbstractGlobalTestCase {
     }
 
 
-    /**
-     *
-     */
-    protected function featureClass() {
+    #[Group('repo')]
+    #[Test]
+    public function testFeatureClass() {
         $repo         = new \MichaelDrennen\Geonames\Repositories\FeatureClassRepository();
         $featureClass = $repo->getById( 'R' );
         $this->assertInstanceOf( \MichaelDrennen\Geonames\Models\FeatureClass::class, $featureClass );
@@ -122,7 +103,9 @@ class RepositoryTest extends AbstractGlobalTestCase {
     }
 
 
-    protected function isoLanguageCode() {
+    #[Group('repo')]
+    #[Test]
+    public function testIsoLanguageCode() {
         $repo             = new \MichaelDrennen\Geonames\Repositories\IsoLanguageCodeRepository();
         $isoLanguageCodes = $repo->all();
         $this->assertInstanceOf( \Illuminate\Support\Collection::class, $isoLanguageCodes );
@@ -130,11 +113,9 @@ class RepositoryTest extends AbstractGlobalTestCase {
     }
 
 
-    /**
-     * 7500737
-     *
-     */
-    protected function geoname() {
+    #[Group('repo')]
+    #[Test]
+    public function testGeoname() {
         $repo = new \MichaelDrennen\Geonames\Repositories\GeonameRepository();
 
         $geonames = $repo->getCitiesNotFromCountryStartingWithTerm( 'US', "ka" );

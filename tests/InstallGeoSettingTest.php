@@ -3,6 +3,8 @@
 namespace MichaelDrennen\Geonames\Tests;
 
 use MichaelDrennen\Geonames\Models\GeoSetting;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
 
 class InstallGeoSettingTest extends BaseInstallTestCase {
 
@@ -10,21 +12,18 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
      * This same code was being called repeatedly through these tests.
      */
     protected function geoSettingInstallForTest() {
-        echo "\nCalling GeoSetting::install()...";
         GeoSetting::install(
             [ 'BS', 'YU', 'UZ' ],
             [ 'en' ],
             'geonames',
             $this->DB_CONNECTION
         );
-        echo "\nComplete.\n";
     }
 
     /**
      * This same code was being called repeatedly through these tests.
      */
     protected function geoSettingInitForTest() {
-        echo "\nCalling GeoSetting::init()...\n";
         GeoSetting::init(
             [ 'BS', 'YU', 'UZ' ],
             [ 'en' ],
@@ -34,22 +33,20 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingGetConnectionNameShouldReturnString() {
         $this->geoSettingInstallForTest();
         $connectionName = GeoSetting::getDatabaseConnectionName();
         $this->assertEquals( $this->DB_CONNECTION, $connectionName );
     }
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingInstall() {
         $this->geoSettingInstallForTest();
         $geoSetting = GeoSetting::first();
@@ -57,11 +54,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingInstallAfterInstall() {
         $this->geoSettingInstallForTest();
         $this->geoSettingInstallForTest();
@@ -69,11 +65,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
         $this->assertInstanceOf( GeoSetting::class, $geoSetting );
     }
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingInit() {
         $this->geoSettingInitForTest();
         $geoSetting = GeoSetting::first();
@@ -81,11 +76,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingInitAfterInstall() {
         $this->geoSettingInstallForTest();
         $this->geoSettingInitForTest();
@@ -94,11 +88,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingAddExistingLanguageAfterInstall() {
         $this->geoSettingInstallForTest();
         GeoSetting::addLanguage( 'en', 'testing' );
@@ -108,11 +101,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
         $this->assertEquals( 'en', $geoSetting->{GeoSetting::DB_COLUMN_LANGUAGES}[ 0 ] );
     }
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingAddNewLanguageAfterInstall() {
         $this->geoSettingInstallForTest();
         GeoSetting::addLanguage( 'gb', 'testing' );
@@ -123,11 +115,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
         $this->assertEquals( 'gb', $geoSetting->{GeoSetting::DB_COLUMN_LANGUAGES}[ 1 ] );
     }
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingRemoveNewlyAddedLanguage() {
         $this->geoSettingInstallForTest();
 
@@ -147,11 +138,10 @@ class InstallGeoSettingTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group geosetting
-     */
+
+    #[Group('install')]
+    #[Group('geosetting')]
+    #[Test]
     public function testGeoSettingAttemptToRemoveNonexistentLanguageShouldReturnTrue() {
         $this->geoSettingInstallForTest();
         $result = GeoSetting::removeLanguage( 'xx', 'testing' );

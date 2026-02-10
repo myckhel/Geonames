@@ -2,13 +2,14 @@
 
 namespace MichaelDrennen\Geonames\Tests;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Group;
+
 class InstallIsoLanguageCodeTest extends BaseInstallTestCase {
 
-    /**
-     * @test
-     * @group install
-     * @group iso
-     */
+    #[Group('install')]
+    #[Group('iso')]
+    #[Test]
     public function testIsoLanguageCodeCommand() {
         $this->artisan( 'geonames:iso-language-code', [ '--connection' => $this->DB_CONNECTION ] );
         $isoLanguageCodes = \MichaelDrennen\Geonames\Models\IsoLanguageCode::all();
@@ -18,11 +19,9 @@ class InstallIsoLanguageCodeTest extends BaseInstallTestCase {
     }
 
 
-    /**
-     * @test
-     * @group install
-     * @group iso
-     */
+    #[Group('install')]
+    #[Group('iso')]
+    #[Test]
     public function testIsoLanguageCodeCommandFailureWithNonExistentConnection() {
         $this->expectException( \Exception::class );
         $this->artisan( 'geonames:iso-language-code', [ '--connection' => 'i-dont-exist' ] );
